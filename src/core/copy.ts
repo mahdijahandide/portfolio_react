@@ -1,5 +1,6 @@
 export const copy = {
   en: {
+    home: 'Home',
     work: 'Work',
     about: 'About',
     contact: 'Contact',
@@ -46,6 +47,7 @@ export const copy = {
     skip: 'Skip to content',
   },
   fa: {
+    home: 'خانه',
     work: 'نمونه‌کارها',
     about: 'درباره من',
     contact: 'ارتباط',

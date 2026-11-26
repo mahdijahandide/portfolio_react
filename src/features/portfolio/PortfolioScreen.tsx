@@ -3,6 +3,7 @@ import SiteHeader, { type Preferences } from '@/components/SiteHeader'
 import { sections } from '@/app/routes'
 import { identity } from '@/core/config'
 import { copy } from '@/core/copy'
+import MobileNavigation from './components/MobileNavigation'
 import { useInstall } from './hooks/useInstall'
 import Hero from './partials/Hero'
 import Work from './partials/Work'
@@ -45,6 +46,7 @@ export default function PortfolioScreen(preferences: Preferences) {
           </a>
         </div>
       </footer>
+      <MobileNavigation lang={lang} />
     </>
   )
 }

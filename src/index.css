@@ -901,27 +901,76 @@ form .button {
     height: 155px;
   }
 }
+.mobile-navigation {
+  display: none;
+}
+
 @media (max-width: 650px) {
   .container {
     width: calc(100% - 32px);
   }
+  html:has(.mobile-navigation) {
+    scroll-padding-block-end: calc(94px + env(safe-area-inset-bottom));
+  }
   .header-inner {
-    min-height: 0;
-    flex-wrap: wrap;
-    gap: 0;
-    padding-block: 9px 6px;
+    min-height: calc(60px + env(safe-area-inset-top));
+    gap: 8px;
+    padding-block-start: env(safe-area-inset-top);
   }
   .header-inner nav {
-    order: 3;
-    width: 100%;
-    justify-content: center;
-    padding-block: 6px 0;
-    gap: 25px;
+    display: none;
   }
-  .header-inner nav a {
+  .mobile-navigation {
+    position: fixed;
+    z-index: 5;
+    inset-inline: max(12px, env(safe-area-inset-left), env(safe-area-inset-right));
+    inset-block-end: calc(10px + env(safe-area-inset-bottom));
+    width: auto;
+    max-width: 440px;
+    margin-inline: auto;
     display: grid;
-    align-items: center;
-    min-height: 35px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    padding: 5px;
+    border: 1px solid var(--line-strong);
+    border-radius: 24px;
+    background:
+      linear-gradient(155deg, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%),
+      color-mix(in srgb, var(--surface) 87%, transparent);
+    box-shadow:
+      inset 0 1px 0 var(--line-strong),
+      0 12px 36px color-mix(in srgb, #000 25%, transparent);
+    backdrop-filter: blur(20px) saturate(145%);
+    -webkit-backdrop-filter: blur(20px) saturate(145%);
+  }
+  .mobile-navigation a {
+    min-height: 54px;
+    display: grid;
+    grid-template-rows: 21px auto;
+    place-content: center;
+    justify-items: center;
+    gap: 4px;
+    padding-inline: 2px;
+    border: 1px solid transparent;
+    border-radius: 18px;
+    color: var(--muted);
+    font-size: 0.69rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: center;
+    white-space: nowrap;
+    transition:
+      background-color 0.2s,
+      color 0.2s,
+      border-color 0.2s;
+  }
+  .mobile-navigation a[aria-current='location'] {
+    color: var(--accent);
+    border-color: var(--line-strong);
+    background-color: color-mix(in srgb, var(--accent) 13%, transparent);
+  }
+  .footer {
+    padding-block-end: calc(98px + env(safe-area-inset-bottom));
   }
   .header-actions {
     gap: 6px;
@@ -942,7 +991,7 @@ form .button {
     grid-template-columns: 1fr;
     gap: 3px;
     padding-block: 34px 23px;
-    scroll-margin-top: 108px;
+    scroll-margin-top: calc(66px + env(safe-area-inset-top));
   }
   .hero h1 {
     font-size: clamp(3rem, 13vw, 5.2rem);
@@ -999,7 +1048,7 @@ form .button {
   }
   .section {
     padding-block: 45px;
-    scroll-margin-top: 102px;
+    scroll-margin-top: calc(65px + env(safe-area-inset-top));
   }
   .projects-grid,
   .experience-layout,
