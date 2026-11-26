@@ -1,0 +1,82 @@
+html:has(.resume-sheet) {
+  color-scheme: light;
+  background: #fff;
+}
+.resume-sheet {
+  font-family: Iransans, sans-serif;
+  color: #182235;
+  background: white;
+  width: min(100%, 210mm);
+  margin: auto;
+  font-size: 10pt;
+  line-height: 1.95;
+}
+.resume-page {
+  padding: 7mm 11mm;
+}
+.resume-sheet header {
+  text-align: center;
+  padding: 8px 16px 14px;
+  background: linear-gradient(white 0 45px, #f4f7fa 45px);
+  margin-bottom: 18px;
+}
+.resume-sheet header img {
+  width: 107px;
+  height: 107px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.resume-sheet h1 {
+  color: #006bd6;
+  font-size: 17pt;
+  margin: 0;
+}
+.resume-sheet h2 {
+  font-size: 12pt;
+  color: #006bd6;
+  text-align: center;
+  margin: 18px auto 11px;
+  width: 52%;
+  border-bottom: 1px solid #006bd6;
+  break-after: avoid;
+}
+.resume-sheet p {
+  margin: 5px 0;
+}
+.resume-sheet ul {
+  padding-inline-start: 20px;
+}
+.resume-sheet a {
+  color: #0065bd;
+}
+.resume-jobs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 20px;
+}
+.resume-sheet article,
+.resume-jobs > div {
+  break-inside: avoid;
+  margin-bottom: 17px;
+}
+.resume-sheet small {
+  color: #45526a;
+}
+@page {
+  size: A4;
+  margin: 8mm 0;
+}
+@media print {
+  .resume-sheet {
+    width: 100%;
+    margin: 0;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .resume-page + .resume-page {
+    break-before: page;
+  }
+  body {
+    background: white !important;
+  }
+}
