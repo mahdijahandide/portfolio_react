@@ -14,6 +14,8 @@ const items = [
 export default function MobileNavigation({ lang }: { lang: Language }) {
   const [active, setActive] = useState<(typeof items)[number]['section']>(sections.home)
 
+  const [pressed, setPressed] = useState<typeof active>()
+
   useEffect(() => {
     const anchors = items.map(({ section }) => document.getElementById(section))
     let frame = 0
@@ -50,6 +52,13 @@ export default function MobileNavigation({ lang }: { lang: Language }) {
           key={section}
           href={'#' + section}
           aria-current={active === section ? 'location' : undefined}
+          data-pressed={pressed === section ? '' : undefined}
+          onPointerDown={(event) => {
+            if (event.isPrimary && event.button === 0) setPressed(section)
+          }}
+          onPointerUp={() => setPressed(undefined)}
+          onPointerCancel={() => setPressed(undefined)}
+          onPointerLeave={() => setPressed(undefined)}
         >
           <Icon size={21} aria-hidden="true" />
           <span>{copy[lang][label]}</span>
