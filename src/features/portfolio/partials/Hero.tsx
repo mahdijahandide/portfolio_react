@@ -1,8 +1,9 @@
-import { ArrowDown, ArrowUpRight, Braces, Download, MapPin } from 'lucide-react'
+import { ArrowDown, ArrowUpRight, Braces, MapPin } from 'lucide-react'
 import headshot from '@/assets/mahdi.jpg'
 import { sections } from '@/app/routes'
 import { identity, technologies, type Language } from '@/core/config'
 import { copy } from '@/core/copy'
+import ResumeDownload from '@/features/resume/components/ResumeDownload'
 import TechnologyIcon from '../components/TechnologyIcon'
 
 export default function Hero({ lang }: { lang: Language }) {
@@ -27,14 +28,7 @@ export default function Hero({ lang }: { lang: Language }) {
               {t.hire}
               <ArrowUpRight size={18} />
             </a>
-            <a
-              className="button outline"
-              href={import.meta.env.BASE_URL + identity.resume[lang]}
-              download
-            >
-              <Download size={17} />
-              {t.resume}
-            </a>
+            <ResumeDownload lang={lang} />
           </div>
           <a className="explore" href={'#' + sections.work}>
             <ArrowDown size={15} />
