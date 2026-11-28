@@ -1,4 +1,4 @@
-import { Download, X } from 'lucide-react'
+import { ChevronDown, Download, X } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { expertise, projects, type Language } from '@/core/config'
 import { copy } from '@/core/copy'
@@ -6,7 +6,8 @@ import './resume-download.css'
 
 const labels = {
   en: {
-    title: 'Customize your résumé',
+    title: 'Download résumé',
+    more: 'More settings',
     hint: 'Choose which areas of expertise and projects to include.',
     language: 'PDF language',
     skills: 'Expertise',
@@ -18,7 +19,8 @@ const labels = {
     error: 'Could not create the PDF. Please try again.',
   },
   fa: {
-    title: 'رزومه را شخصی‌سازی کن',
+    title: 'دانلود رزومه',
+    more: 'تنظیمات بیشتر',
     hint: 'تخصص‌ها و پروژه‌هایی را که می‌خواهی در رزومه باشند انتخاب کن.',
     language: 'زبان فایل PDF',
     skills: 'تخصص‌ها',
@@ -45,6 +47,7 @@ export default function ResumeDownload({ lang }: { lang: Language }) {
     skills: entries.skills.map(({ id }) => id),
     projects: entries.projects.map(({ id }) => id),
   }))
+  const [expanded, setExpanded] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(false)
   const t = labels[lang]
@@ -81,6 +84,7 @@ export default function ResumeDownload({ lang }: { lang: Language }) {
         aria-haspopup="dialog"
         onClick={() => {
           setPdfLang(lang)
+          setExpanded(false)
           setError(false)
           dialog.current?.showModal()
         }}
@@ -103,7 +107,6 @@ export default function ResumeDownload({ lang }: { lang: Language }) {
           <header className="resume-download-header">
             <div>
               <h2 id="resume-download-title">{t.title}</h2>
-              <p>{t.hint}</p>
             </div>
             <button
               type="button"
@@ -127,49 +130,63 @@ export default function ResumeDownload({ lang }: { lang: Language }) {
                 <option value="fa">فارسی</option>
               </select>
             </label>
-            {(['skills', 'projects'] as const).map((group: Group) => {
-              const all = selected[group].length === entries[group].length
-              return (
-                <fieldset key={group} disabled={busy}>
-                  <legend>{t[group]}</legend>
-                  <button
-                    className="resume-select-all"
-                    type="button"
-                    onClick={() =>
-                      setSelected((previous) => ({
-                        ...previous,
-                        [group]: all ? [] : entries[group].map(({ id }) => id),
-                      }))
-                    }
-                  >
-                    {all ? t.none : t.all}
-                  </button>
-                  <div className="resume-options">
-                    {entries[group].map(({ id, title, stack }) => (
-                      <label key={id}>
-                        <input
-                          type="checkbox"
-                          checked={selected[group].includes(id)}
-                          onChange={(event) => {
-                            const checked = event.target.checked
-                            setSelected((previous) => ({
-                              ...previous,
-                              [group]: checked
-                                ? [...previous[group], id]
-                                : previous[group].filter((value) => value !== id),
-                            }))
-                          }}
-                        />
-                        <span>
-                          {title[lang]}
-                          <small dir="ltr">{stack.join(' · ')}</small>
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </fieldset>
-              )
-            })}
+            <button
+              type="button"
+              className="resume-more-settings"
+              aria-expanded={expanded}
+              aria-controls="resume-more-options"
+              disabled={busy}
+              onClick={() => setExpanded((open) => !open)}
+            >
+              {t.more}
+              <ChevronDown size={16} aria-hidden="true" />
+            </button>
+            <div id="resume-more-options" hidden={!expanded}>
+              <p className="resume-options-hint">{t.hint}</p>
+              {(['skills', 'projects'] as const).map((group: Group) => {
+                const all = selected[group].length === entries[group].length
+                return (
+                  <fieldset key={group} disabled={busy}>
+                    <legend>{t[group]}</legend>
+                    <button
+                      className="resume-select-all"
+                      type="button"
+                      onClick={() =>
+                        setSelected((previous) => ({
+                          ...previous,
+                          [group]: all ? [] : entries[group].map(({ id }) => id),
+                        }))
+                      }
+                    >
+                      {all ? t.none : t.all}
+                    </button>
+                    <div className="resume-options">
+                      {entries[group].map(({ id, title, stack }) => (
+                        <label key={id}>
+                          <input
+                            type="checkbox"
+                            checked={selected[group].includes(id)}
+                            onChange={(event) => {
+                              const checked = event.target.checked
+                              setSelected((previous) => ({
+                                ...previous,
+                                [group]: checked
+                                  ? [...previous[group], id]
+                                  : previous[group].filter((value) => value !== id),
+                              }))
+                            }}
+                          />
+                          <span>
+                            {title[lang]}
+                            <small dir="ltr">{stack.join(' · ')}</small>
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+                )
+              })}
+            </div>
           </div>
           <footer className="resume-download-footer">
             {error && <p role="alert">{t.error}</p>}
